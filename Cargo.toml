@@ -1,0 +1,5 @@
+[package]
+
+name = "netbuf"
+version = "0.0.1"
+authors = ["Evgeny Rozaliev <rozaliev@gmail.com>"]
