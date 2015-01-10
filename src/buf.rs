@@ -4,19 +4,19 @@ use std::iter::AdditiveIterator;
 use std::collections::RingBuf;
 use std::io;
 
-use {Arena,ArenaCtl, NetWriter, PartialResult};
+use {Arena, NetWriter, PartialResult};
 use chunk::Chunk;
 
 pub struct NetBuf {
-    arena_ctl: Rc<RefCell<ArenaCtl>>,
-    chunks: RingBuf<Chunk>,
+    arena: Arena,
+    chunks: RingBuf<Chunk<Arena>>,
     pos: usize
 }
 
 impl NetBuf {
-    pub fn new(arena_ctl: Rc<RefCell<ArenaCtl>>) -> NetBuf {
+    pub fn new(arena: Arena) -> NetBuf {
         NetBuf {
-            arena_ctl: arena_ctl,
+            arena: arena,
             chunks: RingBuf::new(),
             pos: 0
         }
@@ -27,7 +27,7 @@ impl NetBuf {
         let mut pos = 0;
 
         if self.chunks.len() == 0 {
-            self.chunks.push_back(self.arena_ctl.borrow_mut().new_chunk());
+            self.chunks.push_back(self.arena.new_chunk());
         }
 
         while left > 0 {
@@ -38,7 +38,7 @@ impl NetBuf {
             }
 
             if written == 0 {
-                self.chunks.push_back(self.arena_ctl.borrow_mut().new_chunk());
+                self.chunks.push_back(self.arena.new_chunk());
             } else {
                 left -= written;
                 pos += written;
