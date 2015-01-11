@@ -33,6 +33,8 @@ impl<T:Releasable> Chunk<T> {
 
         let dlen = cmp::min(self.cap-self.len, data.len());
 
+        // println!("Chunk {:?} write cap: {} data.len: {} self.len: {} dlen: {}", self.token, self.cap, data.len(), self.len, dlen);
+
         unsafe { ptr::copy_nonoverlapping_memory(self.mem.offset(self.len as isize),data.as_ptr(),dlen); }
 
         self.len = self.len + dlen;

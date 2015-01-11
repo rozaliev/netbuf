@@ -23,7 +23,7 @@ fn bench_vec_big(b: &mut Bencher) {
 
 #[bench]
 fn bench_net_buf_big(b: &mut Bencher) {
-    let arena = Arena::new(4096,100);
+    let arena = Arena::new(4096,200);
     b.iter(|| {
         for _ in range(0,1000) {
             let mut buf = arena.new_buf();
@@ -40,7 +40,7 @@ fn bench_vec_small(b: &mut Bencher) {
     b.iter(|| {
         for _ in range(0,1000) {
             let mut v = vec!();
-            for _ in range(0,1000) {
+            for _ in range(0,100) {
                 black_box(v.write(TEST_SMALL_DATA))
             }
         }
@@ -49,11 +49,11 @@ fn bench_vec_small(b: &mut Bencher) {
 
 #[bench]
 fn bench_net_buf_small(b: &mut Bencher) {
-    let arena = Arena::new(4096,100);
+    let arena = Arena::new(4096,2000);
     b.iter(|| {
         for _ in range(0,1000) {
             let mut buf = arena.new_buf();
-            for _ in range(0,1000) {
+            for _ in range(0,100) {
                 buf.write(TEST_SMALL_DATA);
             }
         }
