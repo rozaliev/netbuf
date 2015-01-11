@@ -3,3 +3,21 @@
 name = "netbuf"
 version = "0.0.1"
 authors = ["Evgeny Rozaliev <rozaliev@gmail.com>"]
+
+[profile.test]
+opt-level = 3
+debug = true
+rpath = true
+lto = true
+
+[profile.bench]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true

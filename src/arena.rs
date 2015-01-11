@@ -104,7 +104,7 @@ mod test {
         let mut arena = Arena::new(2,2);
         let mut buf = arena.new_buf();
         assert_eq!(buf.len(),0);
-        assert_eq!(arena.free_chunks(),0)
+        assert_eq!(arena.free_chunks(),1)
     }
 
     #[test]
@@ -154,5 +154,16 @@ mod test {
         drop(chunk2);
         assert_eq!(arena.free_chunks(),2);
 
+    }
+
+    #[test]
+    fn test_frees_space_on_buf_drop() {
+        let mut arena = Arena::new(1,1);
+        assert_eq!(arena.free_chunks(),0);
+        {
+            let mut buf = arena.new_buf();
+            buf.write(b"asdf");
+        }
+        assert_eq!(arena.free_chunks(),4);
     }
 }

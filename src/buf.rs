@@ -15,20 +15,18 @@ pub struct NetBuf {
 
 impl NetBuf {
     pub fn new(arena: Arena) -> NetBuf {
-        NetBuf {
+        let mut buf = NetBuf {
             arena: arena,
             chunks: RingBuf::new(),
             pos: 0
-        }
+        };
+        buf.chunks.push_back(buf.arena.new_chunk());
+        buf
     }
 
     pub fn write(&mut self, data: &[u8]) {
         let mut left = data.len();
         let mut pos = 0;
-
-        if self.chunks.len() == 0 {
-            self.chunks.push_back(self.arena.new_chunk());
-        }
 
         while left > 0 {
             let mut written = 0;

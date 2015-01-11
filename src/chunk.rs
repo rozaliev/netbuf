@@ -33,7 +33,7 @@ impl<T:Releasable> Chunk<T> {
 
         let dlen = cmp::min(self.cap-self.len, data.len());
 
-        unsafe { ptr::copy_memory(self.mem.offset(self.len as isize),data[0..dlen].as_ptr(),dlen); }
+        unsafe { ptr::copy_nonoverlapping_memory(self.mem.offset(self.len as isize),data.as_ptr(),dlen); }
 
         self.len = self.len + dlen;
         dlen
